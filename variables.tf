@@ -50,6 +50,9 @@ locals {
 
   name_prefix = "${var.name_prefix != "" ? var.name_prefix : local.default_name_prefix}"
   name        = "${local.name_prefix}${local.type}"
+
+  # If kind is linux, this variable must calculate to true
+  reserved = "${var.kind != "Windows" ? true : false}"
 }
 
 # This module provides a data map output to lookup naming standard references

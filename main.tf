@@ -4,7 +4,7 @@ resource "azurerm_app_service_plan" "plan" {
   location            = "${var.location}"
   resource_group_name = "${var.rg_name}"
   kind                = "${var.kind}"
-  reserved            = true
+  reserved            = "${local.reserved}"
 
   sku {
     tier = "${var.tier}"
