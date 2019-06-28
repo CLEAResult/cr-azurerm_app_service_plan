@@ -1,23 +1,22 @@
 resource "azurerm_app_service_plan" "plan" {
-  name                = "${local.name}${format("%03d", count.index + 1)}"
-  count               = "${var.count}"
-  location            = "${var.location}"
-  resource_group_name = "${var.rg_name}"
-  kind                = "${var.kind}"
-  reserved            = "${local.reserved}"
+  name                = format("%s%03d", local.name, count.index + 1)
+  count               = var.num
+  location            = var.location
+  resource_group_name = var.rg_name
+  kind                = var.kind
+  reserved            = local.reserved
 
   sku {
-    tier = "${var.tier}"
-    size = "${var.size}"
+    tier = var.tier
+    size = var.size
   }
 
   lifecycle {
-    ignore_changes = [
-      "tags",
-    ]
+    ignore_changes = [tags]
   }
 
-  tags {
+  tags = {
     InfrastructureAsCode = "True"
   }
 }
+
