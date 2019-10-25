@@ -40,6 +40,13 @@ variable "tier" {
   description = "Tier for app service plan.  Valid values are: Free, Shared, Basic, Standard, Premium, or PremiumV2.  Default is Standard."
 }
 
+
+variable "capacity" {
+  default     = ""
+  description = "The number of instances supporting the App Service Plan"
+}
+
+
 # Compute default name values
 locals {
   env_id = lookup(module.naming.env-map, var.environment, "env")
@@ -53,6 +60,10 @@ locals {
 
   # If kind is linux, this variable must calculate to true
   reserved = var.kind != "Windows" ? true : false
+
+  #If production, default capacity is 2
+  default_capacity = local.env_id == "p" ? 2 : 1
+  capacity         = var.capacity != "" ? var.capacity : local.default_capacity
 }
 
 # This module provides a data map output to lookup naming standard references
