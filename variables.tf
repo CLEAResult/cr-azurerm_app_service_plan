@@ -31,12 +31,12 @@ variable "kind" {
 }
 
 variable "size" {
-  default     = "S1"
+  default     = ""
   description = "Size for app service plan.  Dependent on the specified tier.  For more information see https://azure.microsoft.com/en-us/pricing/details/app-service/windows/.  Default is S1."
 }
 
 variable "tier" {
-  default     = "Standard"
+  default     = ""
   description = "Tier for app service plan.  Valid values are: Free, Shared, Basic, Standard, Premium, or PremiumV2.  Default is Standard."
 }
 
@@ -61,9 +61,18 @@ locals {
   # If kind is linux, this variable must calculate to true
   reserved = var.kind != "Windows" ? true : false
 
-  #If production, default capacity is 2
+  #Determine App Service Plan Capacity
   default_capacity = local.env_id == "p" ? 2 : 1
   capacity         = var.capacity != "" ? var.capacity : local.default_capacity
+
+
+  #Determine App Service Plan Size
+  default_size = local.env_id == "p" ? "P1V2" : "S1"
+  size         = var.size == "" ? local.default_size : var.size
+
+  #Determine App Service Plan Tier
+  default_tier = local.env_id == "p" ? "PremiumV2" : "Standard"
+  tier         = var.tier == "" ? local.default_tier : var.tier
 }
 
 # This module provides a data map output to lookup naming standard references

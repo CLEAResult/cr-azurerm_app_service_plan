@@ -7,8 +7,8 @@ resource "azurerm_app_service_plan" "plan" {
   reserved            = local.reserved
 
   sku {
-    tier     = var.tier
-    size     = var.size
+    tier     = local.tier
+    size     = local.size
     capacity = local.capacity
   }
 
